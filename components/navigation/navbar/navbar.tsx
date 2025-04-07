@@ -10,6 +10,14 @@ import { RiInstagramLine, RiTwitterXLine, RiGithubLine } from "react-icons/ri";
 export function Navbar() {
   const pathname = usePathname();
 
+  const scrollToServices = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const servicesSection = document.getElementById("services-section");
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-transparent backdrop-blur-sm supports-[backdrop-filter]:bg-background/20">
       <div className="flex h-14 max-w-screen-2xl items-center px-4 mx-auto">
@@ -28,17 +36,15 @@ export function Navbar() {
             >
               Home
             </Link>
-            <Link
-              href="/services"
+            <button
+              onClick={scrollToServices}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/services"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                pathname === "/" ? "text-foreground" : "text-muted-foreground"
               )}
             >
               Services
-            </Link>
+            </button>
             <Link
               href="/about"
               className={cn(

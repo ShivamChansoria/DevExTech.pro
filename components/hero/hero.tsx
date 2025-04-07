@@ -1,8 +1,18 @@
+"use client";
+
 import React from "react";
 import { Bell, ArrowDownCircle } from "lucide-react";
 import Image from "next/image";
 
 const Hero = () => {
+  const scrollToServices = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const servicesSection = document.getElementById("services-section");
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative min-h-[80vh] w-full bg-[#0A0A0F] px-4 md:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl pt-6 md:pt-8 lg:pt-12">
@@ -29,7 +39,10 @@ const Hero = () => {
 
           {/* Animated Arrow */}
           <div className="relative mt-20 flex justify-center">
-            <div className="group relative cursor-pointer">
+            <div
+              className="group relative cursor-pointer"
+              onClick={scrollToServices}
+            >
               <ArrowDownCircle className="h-12 w-12 text-blue-500 transition-all duration-300 ease-in-out group-hover:text-blue-400 group-hover:transform group-hover:translate-y-1" />
               <div className="absolute -top-16 left-1/2 -translate-x-1/2 transform opacity-0 transition-all duration-300 group-hover:opacity-100">
                 <div className="relative rounded-lg bg-blue-600 px-4 py-2 text-sm text-white">
