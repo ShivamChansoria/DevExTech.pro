@@ -18,7 +18,7 @@ export function Navbar() {
             <Logo />
           </Link>
 
-          <nav className="flex items-center space-x-10">
+          <nav className="hidden sm:flex items-center space-x-10">
             <Link
               href="/"
               className={cn(
@@ -65,7 +65,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center space-x-4 ml-auto">
-          <div className="flex items-center space-x-3 border-r border-border/40 pr-4">
+          <div className="hidden sm:flex items-center space-x-3 border-r border-border/40 pr-4">
             <Link
               href="https://github.com"
               target="_blank"

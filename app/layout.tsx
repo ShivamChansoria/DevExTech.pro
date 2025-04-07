@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navigation/navbar";
+import { LeftSideBar } from "@/components/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -89,10 +90,12 @@ export default function RootLayout({
           ${notoSansSemiBold.variable} ${notoSansSemiBoldItalic.variable} ${notoSansBold.variable} ${notoSansBoldItalic.variable}
           ${notoSansExtraBold.variable} ${notoSansExtraBoldItalic.variable}
           font-noto-sans antialiased`}
+        suppressHydrationWarning
       >
         <Providers>
           <div className="min-h-screen bg-background">
             <Navbar />
+            <LeftSideBar />
             <main className="pt-14">{children}</main>
           </div>
         </Providers>
