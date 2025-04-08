@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { ROUTES } from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 const NotFound = () => {
   return (
     <div className="min-h-screen w-full bg-white dark:bg-[#0A0A0F] flex flex-col items-center justify-center px-4">

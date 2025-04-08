@@ -1,24 +1,24 @@
 import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
 export interface IUser {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   address?: string;
-  password: string;
-  contact: number;
+  phone?: number;
   organization?: string;
+  image?: string;
 }
 
 export interface IUserDoc extends IUser, Document {}
 
 const UserSchema = new Schema<IUserDoc>(
   {
-    firstName: {
+    firstname: {
       type: String,
       required: true,
     },
-    lastName: {
+    lastname: {
       type: String,
       required: true,
     },
@@ -31,15 +31,15 @@ const UserSchema = new Schema<IUserDoc>(
       type: String,
       required: false,
     },
-    password: {
-      type: String,
-      required: true,
-    },
-    contact: {
+    phone: {
       type: Number,
-      required: true,
+      required: false,
     },
     organization: {
+      type: String,
+      required: false,
+    },
+    image: {
       type: String,
       required: false,
     },

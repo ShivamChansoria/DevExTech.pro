@@ -1,13 +1,12 @@
 "use client";
-
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signInSchema, type SignInFormValues } from "@/lib/validation";
+import { SignInSchema, type SignInFormValues } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -18,20 +17,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { signInWithCredentials } from "@/lib/actions/auth.action";
+import logger from "@/lib/logger";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
 const SignIn = () => {
+  const router = useRouter();
   const form = useForm<SignInFormValues>({
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
   });
 
-  const onSubmit = (values: SignInFormValues) => {
+  const onSubmit = async (values: SignInFormValues) => {
     console.log(values);
     // Handle form submission
+    try {
+      const result = await signInWithCredentials({
+        email: values.email,
+        password: values.password,
+      });
+      if (result.success) {
+        toast.success(result.data?.message || "Sign in successful");
+        logger.info("Sign in successful");
+        router.push(ROUTES.home);
+      } else {
+        toast.error(result.error || "Sign in failed");
+        console.error("Sign in failed: " + (result.error || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error during sign in:", error);
+      toast.error("An unexpected error occurred");
+    }
   };
 
   return (
@@ -47,10 +69,7 @@ const SignIn = () => {
         </div>
 
         <div className="space-y-4">
-          <Button className="w-full h-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center space-x-2 rounded-full">
-            <FaGoogle className="h-5 w-5 text-[#4285F4]" />
-            <span>Continue with Google</span>
-          </Button>
+          <GoogleSignInButton />
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -103,26 +122,6 @@ const SignIn = () => {
               />
 
               <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="rememberMe"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-sm font-normal">
-                          Remember me
-                        </FormLabel>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
                 <div className="text-sm">
                   <a
                     href="#"
@@ -134,6 +133,12 @@ const SignIn = () => {
               </div>
 
               <Button
+                onClick={() =>
+                  signInWithCredentials({
+                    email: form.getValues("email"),
+                    password: form.getValues("password"),
+                  })
+                }
                 type="submit"
                 className="w-full h-12 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:from-blue-500 hover:via-blue-600 hover:to-blue-700 text-white rounded-full"
               >

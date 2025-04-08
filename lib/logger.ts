@@ -36,25 +36,62 @@ const logger = pino({
   },
 });
 
+// Safe console methods that won't throw errors
+const safeConsoleLog = (...args: any[]) => {
+  try {
+    console.log(...args);
+  } catch (error) {
+    // Fallback to basic console.log if colored output fails
+    console.log(args.map((arg) => String(arg)).join(" "));
+  }
+};
+
+const safeConsoleError = (...args: any[]) => {
+  try {
+    console.error(...args);
+  } catch (error) {
+    // Fallback to basic console.error if colored output fails
+    console.error(args.map((arg) => String(arg)).join(" "));
+  }
+};
+
+const safeConsoleWarn = (...args: any[]) => {
+  try {
+    console.warn(...args);
+  } catch (error) {
+    // Fallback to basic console.warn if colored output fails
+    console.warn(args.map((arg) => String(arg)).join(" "));
+  }
+};
+
+const safeConsoleDebug = (...args: any[]) => {
+  try {
+    console.debug(...args);
+  } catch (error) {
+    // Fallback to basic console.debug if colored output fails
+    console.debug(args.map((arg) => String(arg)).join(" "));
+  }
+};
+
 // Create wrapper functions for common log levels with clearer formatting and colors
 const info = (message: string) => {
   const coloredMessage = `${colors.green}[INFO]${colors.reset} ${message}`;
-  console.log(coloredMessage);
+  safeConsoleLog(coloredMessage);
 };
 
 const error = (message: string) => {
   const coloredMessage = `${colors.red}[ERROR]${colors.reset} ${message}`;
-  console.error(coloredMessage);
+  safeConsoleError(coloredMessage);
 };
 
 const warn = (message: string) => {
   const coloredMessage = `${colors.yellow}[WARN]${colors.reset} ${message}`;
-  console.warn(coloredMessage);
+  safeConsoleWarn(coloredMessage);
 };
 
 const debug = (message: string) => {
   const coloredMessage = `${colors.cyan}[DEBUG]${colors.reset} ${message}`;
-  console.debug(coloredMessage);
+  safeConsoleDebug(coloredMessage);
 };
 
 // Export the enhanced logger

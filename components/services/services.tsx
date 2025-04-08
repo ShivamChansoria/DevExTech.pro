@@ -172,6 +172,8 @@ const Services = () => {
               Money Back Guarantee valid for 30 days only*
             </span>
             <span className="text-white font-semibold text-xl mx-4">•</span>
+          </div>
+          <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex">
             <span className="text-white font-semibold text-xl mx-4">
               Premium Business Solutions
             </span>

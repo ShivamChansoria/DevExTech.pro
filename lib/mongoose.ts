@@ -7,6 +7,8 @@ if (!MONGODB_URL) {
   throw new Error("Please define the MONGODB_URL!!");
 }
 
+console.log("MongoDB URL:", MONGODB_URL); // Debug log
+
 interface MongooseCache {
   conn: Mongoose | null;
   promise: Promise<Mongoose> | null;
@@ -23,34 +25,43 @@ if (!cached) {
 }
 
 async function dbConnect() {
+  console.log("dbConnect called"); // Debug log
+
   if (!cached) {
+    console.log("No cached connection available"); // Debug log
     return null;
   }
 
   if (cached.conn) {
-    logger.info("Using existing Mongoose connection");
+    console.log("Using existing Mongoose connection"); // Debug log
     return cached.conn;
   }
 
   if (!cached.promise) {
+    console.log("Creating new Mongoose connection"); // Debug log
     const opts = {
       bufferCommands: true,
-      dbName: "dev-overflow",
+      dbName: "devexTech-DB",
     };
 
     cached.promise = mongoose
       .connect(MONGODB_URL!, opts)
       .then((mongoose: Mongoose) => {
-        logger.info("Connected to MongoDB");
+        console.log("Connected to MongoDB successfully"); // Debug log
         return mongoose;
+      })
+      .catch((error) => {
+        console.error("MongoDB connection error:", error); // Debug log
+        throw error;
       });
   }
 
   try {
     cached.conn = await cached.promise;
+    console.log("Mongoose connection established"); // Debug log
   } catch (error) {
     cached.promise = null;
-    logger.error("Error connecting to MongoDB", error);
+    console.error("Error connecting to MongoDB:", error); // Debug log
     throw error;
   }
 

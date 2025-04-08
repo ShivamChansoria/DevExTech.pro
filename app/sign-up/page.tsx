@@ -4,10 +4,10 @@ import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signUpSchema, type SignUpFormValues } from "@/lib/validation";
+import { SignUpSchema, type SignUpFormValues } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -19,10 +19,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { signUpWithCredentials } from "@/lib/actions/auth.action";
+import { toast } from "sonner";
+import logger from "@/lib/logger";
+import { useRouter } from "next/navigation";
+import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
 const SignUp = () => {
+  const router = useRouter();
   const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -36,9 +42,35 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = (values: SignUpFormValues) => {
-    console.log(values);
-    // Handle form submission
+  const submitHandler = async (values: SignUpFormValues) => {
+    try {
+      console.log("Submitting form with values:", values); // Debug log
+      const result = await signUpWithCredentials({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        phone: values.phone,
+        organization: values.organization,
+        address: values.address,
+        terms: values.terms,
+      });
+
+      if (result.success) {
+        // Show success message and redirect to sign-in page
+        toast.success(result.data?.message || "Sign up successful");
+        logger.info("Sign up successful");
+        router.push(ROUTES.signIn);
+      } else {
+        // Handle error
+        toast.error(result.error || "Sign up failed");
+        logger.error("Sign up failed: " + (result.error || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error during sign up:", error);
+      toast.error("An unexpected error occurred");
+    }
   };
 
   return (
@@ -54,10 +86,7 @@ const SignUp = () => {
         </div>
 
         <div className="space-y-4">
-          <Button className="w-full h-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center space-x-2 rounded-full">
-            <FaGoogle className="h-5 w-5 text-[#4285F4]" />
-            <span>Continue with Google</span>
-          </Button>
+          <GoogleSignInButton />
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -71,7 +100,11 @@ const SignUp = () => {
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(submitHandler)}
+              className="space-y-4"
+              noValidate
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}

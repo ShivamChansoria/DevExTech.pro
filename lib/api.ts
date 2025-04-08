@@ -2,11 +2,11 @@ import { IAccount } from "@/database/account.model";
 import { IUser } from "@/database/user.model";
 
 import { fetchHandler } from "./handlers/fetch";
-import { ROUTES } from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 import { SignInWithOAuthParams } from "./types/global";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
 export const api = {
   auth: {
@@ -15,7 +15,7 @@ export const api = {
       provider,
       providerAccountId,
     }: SignInWithOAuthParams) =>
-      fetchHandler(`${API_BASE_URL}/auth/${ROUTES.SIGN_IN_WITH_OAUTH}`, {
+      fetchHandler(`${API_BASE_URL}/auth/sign-in-with-oauth`, {
         method: "POST",
         body: JSON.stringify({ user, provider, providerAccountId }),
       }),

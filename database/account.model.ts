@@ -1,41 +1,30 @@
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import { Schema, model, models, Types, Document } from "mongoose";
 
 export interface IAccount {
-  _id?: Types.ObjectId;
   userId: Types.ObjectId;
-  type: string;
+  firstname: string;
+  lastname: string;
+  image?: string;
+  password?: string;
   provider: string;
   providerAccountId: string;
 }
 
 export interface IAccountDoc extends IAccount, Document {}
 
-const AccountSchema = new Schema<IAccountDoc>(
+const AccountSchema = new Schema<IAccount>(
   {
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    provider: {
-      type: String,
-      required: true,
-    },
-    providerAccountId: {
-      type: String,
-      required: true,
-    },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    image: { type: String, required: false },
+    password: { type: String, required: false },
+    provider: { type: String, required: true },
+    providerAccountId: { type: String, required: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const Account: Model<IAccountDoc> =
-  mongoose.models.Account ||
-  mongoose.model<IAccountDoc>("Account", AccountSchema);
+const Account = models?.Account || model<IAccount>("Account", AccountSchema); //If  account model exists, use it, otherwise create a new one.
 
 export default Account;

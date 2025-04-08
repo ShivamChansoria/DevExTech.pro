@@ -5,12 +5,20 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/buttons";
 import { Logo } from "@/components/logos/logo";
-import { RiInstagramLine, RiTwitterXLine, RiGithubLine } from "react-icons/ri";
-import { ROUTES } from "@/constants/routes";
+import {
+  RiInstagramLine,
+  RiTwitterXLine,
+  RiGithubLine,
+  RiUserLine,
+  RiLogoutBoxRLine,
+} from "react-icons/ri";
+import ROUTES from "@/constants/routes";
 import { Button } from "@/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 export function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const scrollToServices = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -18,6 +26,16 @@ export function Navbar() {
     if (servicesSection) {
       servicesSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  // Extract first name from full name or email
+  const getFirstName = () => {
+    if (session?.user?.name) {
+      return session.user.name.split(" ")[0];
+    } else if (session?.user?.email) {
+      return session.user.email.split("@")[0];
+    }
+    return "";
   };
 
   return (
@@ -103,18 +121,37 @@ export function Navbar() {
               <RiInstagramLine className="h-5 w-5" />
             </Link>
           </div>
-          <div className="hidden sm:flex items-center space-x-3">
-            <Link href={ROUTES.signIn}>
-              <Button className="bg-background/50 hover:bg-background/80 border-2 border-black px-6 py-2 font-thin text-foreground rounded-full">
-                Login
-              </Button>
-            </Link>
-            <Link href={ROUTES.signUp}>
-              <Button className="bg-black hover:bg-black/80 text-white px-6 py-2 font-thin rounded-full">
-                Register
-              </Button>
-            </Link>
-          </div>
+          {!session ? (
+            <div className="hidden sm:flex items-center space-x-3">
+              <Link href={ROUTES.signIn}>
+                <Button className="bg-white dark:bg-black hover:bg-white/80 dark:hover:bg-black/80 border-2 border-black dark:border-white px-6 py-2 font-thin text-foreground dark:text-white rounded-full">
+                  Login
+                </Button>
+              </Link>
+              <Link href={ROUTES.signUp}>
+                <Button className="bg-black dark:bg-white hover:bg-black/80 dark:hover:bg-white/80 text-white dark:text-black px-6 py-2 font-thin rounded-full">
+                  Register
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="hidden sm:flex items-center space-x-3">
+              <Link
+                href={ROUTES.profile(session.user?.email || "")}
+                className="flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors"
+              >
+                <RiUserLine className="h-5 w-5" />
+                <span>{getFirstName()}</span>
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Sign out"
+              >
+                <RiLogoutBoxRLine className="h-5 w-5" />
+              </button>
+            </div>
+          )}
           <ThemeToggle />
         </div>
       </div>
