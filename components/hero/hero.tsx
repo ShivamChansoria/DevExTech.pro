@@ -15,7 +15,20 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-[80vh] w-full bg-[#0A0A0F] px-4 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl pt-6 md:pt-8 lg:pt-12">
+      {/* Background Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src="/images/hero-bg.png"
+          alt="Earth from space"
+          fill
+          className="object-cover object-center"
+          priority
+          quality={100}
+        />
+        <div className="absolute inset-0 bg-[#0A0A0F]/70"></div>
+      </div>
+
+      <div className="mx-auto max-w-7xl pt-6 md:pt-8 lg:pt-12 relative z-10">
         {/* Top Navigation */}
         <div className="flex items-center justify-between"></div>
 
@@ -54,9 +67,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Gradient Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0A0A0F]/50"></div>
     </div>
   );
 };
