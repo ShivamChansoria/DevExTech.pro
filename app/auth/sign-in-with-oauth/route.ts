@@ -145,7 +145,23 @@ export async function POST(request: NextRequest) {
     await session.abortTransaction();
 
     const errorResponse = handleError(error, "api");
-    return errorResponse;
+
+    // Ensure we always return a NextResponse
+    if (errorResponse instanceof NextResponse) {
+      return errorResponse;
+    } else {
+      // If it's not a NextResponse, convert it to one
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            message: errorResponse.error.message,
+            details: errorResponse.error.details,
+          },
+        },
+        { status: errorResponse.status || 500 }
+      );
+    }
   } finally {
     // Always end the session to clean up resources
     session.endSession();

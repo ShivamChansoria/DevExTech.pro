@@ -49,7 +49,7 @@
  * ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
  * │  Log Error      │     │  Create         │     │  Log Error      │
  * │  Format         │     │  ValidationError│     │  Format         │
- * │  Response       │     │  Format         │     │  Response       │
+ * │  Response       │     │  Response       │     │  Response       │
  * └────────┬────────┘     │  Response       │     └────────┬────────┘
  *          │               └────────┬────────┘              │
  *          │                        │                       │
@@ -85,17 +85,16 @@ export const formatResponse = (
     },
   };
 
-  return responseType == "api"
-    ? NextResponse.json(responseContent, { status })
-    : { status, ...responseContent };
+  if (responseType === "api") {
+    return NextResponse.json(responseContent, { status });
+  } else {
+    return { status, ...responseContent };
+  }
 };
 
 const handleError = (error: unknown, responseType: ResponseType = "server") => {
   if (error instanceof RequestError) {
-    logger.error(
-      { err: error },
-      `${responseType.toUpperCase()}Error: ${error.message}`
-    );
+    logger.error(`${responseType.toUpperCase()}Error: ${error.message}`);
     return formatResponse(
       responseType,
       error.statusCode,
@@ -105,7 +104,7 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
   }
 
   if (error instanceof ZodError) {
-    logger.error({ err: error }, ` ${error.message}`);
+    logger.error(`${error.message}`);
     const validationError = new ValidationError(
       error.flatten().fieldErrors as Record<string, string[]>
     );
@@ -120,11 +119,11 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
 
   console.error(error);
   if (error instanceof Error) {
-    logger.error({ err: error }, `${error.message}`);
+    logger.error(`${error.message}`);
     return formatResponse(responseType, 500, error.message);
   }
 
-  logger.error({ err: error }, `Error: Internal server error`);
+  logger.error(`Error: Internal server error`);
   return formatResponse(responseType, 500, "Internal server error");
 };
 export default handleError;
