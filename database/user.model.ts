@@ -5,7 +5,7 @@ export interface IUser {
   lastname: string;
   email: string;
   address?: string;
-  phone?: number;
+  contact?: string;
   organization?: string;
   image?: string;
 }
@@ -31,8 +31,8 @@ const UserSchema = new Schema<IUserDoc>(
       type: String,
       required: false,
     },
-    phone: {
-      type: Number,
+    contact: {
+      type: String,
       required: false,
     },
     organization: {

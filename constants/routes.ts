@@ -14,6 +14,7 @@ const ROUTES = {
   services: "/services",
   about: "/about",
   contact: "/contact",
+  myPurchase: "/my-purchase",
 };
 
 export default ROUTES;

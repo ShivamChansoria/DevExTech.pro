@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { api } from "@/lib/api";
 import { headers } from "next/headers";
+import Contact from "../contact/contact";
 
 interface ProductProps extends ProductSchemaParams {
   onSubscribe?: () => void;
@@ -124,7 +125,7 @@ const Product = ({
           currency: "INR",
           name: session.user?.name || "User",
           email: session.user?.email || "",
-          contact: "0000000000", // Provide a default contact number
+          contact: session.user?.contact || "0000000000", // Use phone number from session
           plan: title,
         }),
       });
@@ -153,7 +154,7 @@ const Product = ({
         prefill: {
           name: session.user?.name || "User",
           email: session.user?.email || "",
-          contact: "0000000000", // Provide a default contact number
+          contact: Contact, // Provide a default contact number
         },
         notes: {
           address: "Madhya Pradesh, India",

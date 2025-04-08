@@ -7,7 +7,7 @@ export const SignUpSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
-    phone: z.string().optional(),
+    contact: z.string().optional(),
     organization: z.string().optional(),
     address: z.string().optional(),
     terms: z.boolean().refine((val) => val === true, {
@@ -38,7 +38,7 @@ export const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
+  contact: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 

@@ -91,6 +91,7 @@ export const authOptions: AuthOptions = {
             firstname: existingUser.firstname,
             lastname: existingUser.lastname,
             email: existingUser.email,
+            contact: existingUser.contact || null,
           };
         }
 
@@ -108,9 +109,13 @@ export const authOptions: AuthOptions = {
         sessionUser: session?.user?.email,
         tokenSub: token?.sub,
       });
-      if (session.user) {
-        // Add id to the session user object
-        (session.user as any).id = token.sub as string;
+      if (session.user && token.sub) {
+        // Get user data including contact
+        const { data: userData } = await api.users.getById(token.sub);
+
+        // Add user data to session
+        session.user.id = token.sub;
+        session.user.contact = userData?.contact || null;
       }
       return session;
     },

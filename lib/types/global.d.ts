@@ -46,8 +46,21 @@ export interface AuthCredentials {
   email: string;
   password: string;
   confirmPassword: string;
-  phone?: string;
+  contact?: string;
   organization?: string;
   address?: string;
   terms: boolean;
+}
+
+export interface PurchaseProps {
+  payment: {
+    order_id: string;
+    name: string;
+    email: string;
+    amount: number;
+    currency: string;
+    plan: string;
+    created_at: Date;
+    verified: boolean;
+  };
 }

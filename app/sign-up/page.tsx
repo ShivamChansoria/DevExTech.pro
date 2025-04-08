@@ -33,7 +33,7 @@ const SignUp = () => {
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
+      contact: "",
       organization: "",
       address: "",
       password: "",
@@ -51,7 +51,7 @@ const SignUp = () => {
         email: values.email,
         password: values.password,
         confirmPassword: values.confirmPassword,
-        phone: values.phone,
+        contact: values.contact,
         organization: values.organization,
         address: values.address,
         terms: values.terms,
@@ -164,13 +164,13 @@ const SignUp = () => {
 
                 <FormField
                   control={form.control}
-                  name="phone"
+                  name="contact"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contact Number</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter your phone number"
+                          placeholder="Enter your contact number"
                           className="rounded-full"
                           {...field}
                         />

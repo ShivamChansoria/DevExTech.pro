@@ -7,7 +7,7 @@ export interface IPayment extends Document {
   amount: number;
   name: string;
   email: string;
-  contact: string;
+  contact: number;
   plan: string;
   created_at: Date;
   verified: boolean;
@@ -37,7 +37,7 @@ const PaymentSchema = new Schema<IPayment>({
     required: false,
   },
   contact: {
-    type: String,
+    type: Number,
     required: true,
   },
   plan: {

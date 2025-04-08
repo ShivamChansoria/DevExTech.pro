@@ -137,7 +137,7 @@ export function Navbar() {
           ) : (
             <div className="hidden sm:flex items-center space-x-3">
               <Link
-                href={ROUTES.profile(session.user?.email || "")}
+                href={ROUTES.myPurchase}
                 className="flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors"
               >
                 <RiUserLine className="h-5 w-5" />

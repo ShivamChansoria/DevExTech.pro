@@ -73,8 +73,15 @@ export async function signUpWithCredentials(
   }
 
   // Step 2: Extract validated parameters
-  const { firstName, lastName, email, password, phone, organization, address } =
-    validationResult.params;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    contact,
+    organization,
+    address,
+  } = validationResult.params;
 
   // Remove confirmPassword and terms from params as they're not needed for user creation
   const { confirmPassword, terms, ...userParams } = validationResult.params;
@@ -83,7 +90,7 @@ export async function signUpWithCredentials(
     firstName,
     lastName,
     email,
-    phone,
+    contact,
     organization,
     address,
   }); // Debug log
@@ -114,7 +121,7 @@ export async function signUpWithCredentials(
           firstname: firstName,
           lastname: lastName,
           email,
-          phone,
+          contact,
           organization,
           address,
         },

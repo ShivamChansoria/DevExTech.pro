@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const { amount, currency, name, email, contact, plan } = body;
 
     // Validate required fields
-    if (!amount || !currency || !name || !plan) {
+    if (!amount || !currency || !name || !plan || !contact) {
       await session.abortTransaction();
       session.endSession();
       return NextResponse.json(
