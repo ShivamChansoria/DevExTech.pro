@@ -39,6 +39,7 @@ import mongoose from "mongoose";
 import handleError from "@/lib/handlers/error";
 import { ValidationError } from "@/lib/http-errors";
 import slugify from "slugify";
+import { APIErrorResponse } from "@/lib/types/global";
 
 export async function POST(request: NextRequest) {
   // Connect to database first
