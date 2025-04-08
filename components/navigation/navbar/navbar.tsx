@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/buttons";
 import { Logo } from "@/components/logos/logo";
 import { RiInstagramLine, RiTwitterXLine, RiGithubLine } from "react-icons/ri";
+import { ROUTES } from "@/constants/routes";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -22,16 +23,18 @@ export function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-transparent backdrop-blur-sm supports-[backdrop-filter]:bg-background/20">
       <div className="flex h-14 max-w-screen-2xl items-center px-4 mx-auto">
         <div className="flex items-center space-x-10">
-          <Link href="/" className="flex items-center">
+          <Link href={ROUTES.home} className="flex items-center">
             <Logo />
           </Link>
 
           <nav className="hidden sm:flex items-center space-x-10">
             <Link
-              href="/"
+              href={ROUTES.home}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/" ? "text-foreground" : "text-muted-foreground"
+                pathname === ROUTES.home
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               )}
             >
               Home
@@ -40,16 +43,18 @@ export function Navbar() {
               onClick={scrollToServices}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/" ? "text-foreground" : "text-muted-foreground"
+                pathname === ROUTES.home
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               )}
             >
               Services
             </button>
             <Link
-              href="/about"
+              href={ROUTES.about}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/about"
+                pathname === ROUTES.about
                   ? "text-foreground"
                   : "text-muted-foreground"
               )}
@@ -57,10 +62,10 @@ export function Navbar() {
               About
             </Link>
             <Link
-              href="/contact"
+              href={ROUTES.contact}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/contact"
+                pathname === ROUTES.contact
                   ? "text-foreground"
                   : "text-muted-foreground"
               )}

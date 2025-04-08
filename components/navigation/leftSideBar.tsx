@@ -12,6 +12,7 @@ import {
   RiMenuLine,
   RiCloseLine,
 } from "react-icons/ri";
+import { ROUTES } from "@/constants/routes";
 
 const LeftSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,10 +56,10 @@ const LeftSideBar = () => {
   }, [pathname, mounted]);
 
   const navItems = [
-    { name: "Home", path: "/", icon: RiHome4Line },
-    { name: "Services", path: "/services", icon: RiServiceLine },
-    { name: "About", path: "/about", icon: RiInformationLine },
-    { name: "Contact", path: "/contact", icon: RiMailLine },
+    { name: "Home", path: ROUTES.home, icon: RiHome4Line },
+    { name: "Services", path: ROUTES.services, icon: RiServiceLine },
+    { name: "About", path: ROUTES.about, icon: RiInformationLine },
+    { name: "Contact", path: ROUTES.contact, icon: RiMailLine },
   ];
 
   // Don't render anything until after hydration to prevent hydration errors

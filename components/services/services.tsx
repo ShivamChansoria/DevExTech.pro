@@ -14,6 +14,7 @@ const Services = () => {
         "Make your presence online with a basic business website",
       inclusions: [
         "Blazing fast website",
+        "Sign In with Google",
         "Basic business information",
         "Products listing",
         "About & Contact Sections",

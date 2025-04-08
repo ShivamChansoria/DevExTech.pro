@@ -217,6 +217,45 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      {/* Marquee Section */}
+      <div className="w-full bg-black py-4 mt-24 overflow-hidden">
+        <div className="relative flex overflow-x-hidden">
+          <div className="animate-marquee whitespace-nowrap flex">
+            <span className="text-white font-semibold text-xl mx-4">
+              Premium Business Solutions
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Expert Support 24/7
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Grow Your Business Today
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Money Back Guarantee valid for 30 days only*
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Premium Business Solutions
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Expert Support 24/7
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Grow Your Business Today
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+            <span className="text-white font-semibold text-xl mx-4">
+              Money Back Guarantee valid for 30 days only*
+            </span>
+            <span className="text-white font-semibold text-xl mx-4">•</span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

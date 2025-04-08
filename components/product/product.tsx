@@ -84,7 +84,7 @@ const Product = ({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-lg">
+      <div className="rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-lg border border-gray-300 dark:border-gray-700">
         {/* Header */}
         <div className="p-6 text-center border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-4xl font-extrabold mb-2 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -115,7 +115,7 @@ const Product = ({
             onClick={onSubscribe}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition-colors"
           >
-            Join {title}
+            Get {title}
           </Button>
 
           <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
