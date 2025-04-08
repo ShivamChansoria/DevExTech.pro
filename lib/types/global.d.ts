@@ -64,3 +64,12 @@ export interface PurchaseProps {
     verified: boolean;
   };
 }
+
+export interface APIErrorResponse {
+  success: false;
+  error: {
+    message: string;
+    details?: Record<string, string[]>;
+  };
+  status?: number;
+}

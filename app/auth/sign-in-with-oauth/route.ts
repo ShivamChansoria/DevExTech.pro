@@ -143,7 +143,8 @@ export async function POST(request: NextRequest) {
     // Rollback all changes if any error occurs
     await session.abortTransaction();
 
-    return handleError(error, "api") as APIErrorResponse;
+    const errorResponse = handleError(error, "api");
+    return errorResponse;
   } finally {
     // Always end the session to clean up resources
     session.endSession();
