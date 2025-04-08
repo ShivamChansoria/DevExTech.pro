@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/buttons";
 import { Logo } from "@/components/logos/logo";
 import { RiInstagramLine, RiTwitterXLine, RiGithubLine } from "react-icons/ri";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -100,6 +101,18 @@ export function Navbar() {
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               <RiInstagramLine className="h-5 w-5" />
+            </Link>
+          </div>
+          <div className="hidden sm:flex items-center space-x-3">
+            <Link href={ROUTES.signIn}>
+              <Button className="bg-background/50 hover:bg-background/80 border-2 border-black px-6 py-2 font-thin text-foreground rounded-full">
+                Login
+              </Button>
+            </Link>
+            <Link href={ROUTES.signUp}>
+              <Button className="bg-black hover:bg-black/80 text-white px-6 py-2 font-thin rounded-full">
+                Register
+              </Button>
             </Link>
           </div>
           <ThemeToggle />
