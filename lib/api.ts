@@ -4,6 +4,7 @@ import { IUser } from "@/database/user.model";
 import { fetchHandler } from "./handlers/fetch";
 import ROUTES from "@/constants/routes";
 import { SignInWithOAuthParams } from "./types/global";
+import { IPayment } from "@/database/payment.model";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
@@ -61,5 +62,15 @@ export const api = {
       }),
     delete: (id: string) =>
       fetchHandler(`${API_BASE_URL}/accounts/${id}`, { method: "DELETE" }),
+  },
+  payment: {
+    createOrder: () =>
+      fetchHandler(`${API_BASE_URL}/payment/create-order`, {
+        method: "POST",
+      }),
+    verifyPayment: () =>
+      fetchHandler(`${API_BASE_URL}/payment/verify-payment`, {
+        method: "POST",
+      }),
   },
 };

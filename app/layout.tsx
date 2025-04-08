@@ -75,6 +75,7 @@ export const metadata: Metadata = {
     shortcut: { url: "/favicon.png", type: "image/png" },
     apple: { url: "/favicon.png", type: "image/png" },
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -84,6 +85,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} 
           ${notoSansRegular.variable} ${notoSansItalic.variable} ${notoSansMedium.variable} ${notoSansMediumItalic.variable}

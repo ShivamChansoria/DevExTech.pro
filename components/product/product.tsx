@@ -11,9 +11,20 @@ import {
   MonitorPlay,
 } from "lucide-react";
 import ProductSchemaParams from "@/lib/types/global";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { api } from "@/lib/api";
+import { headers } from "next/headers";
 
 interface ProductProps extends ProductSchemaParams {
   onSubscribe?: () => void;
+}
+
+// Add Razorpay type declaration
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
 const Product = ({
@@ -28,6 +39,7 @@ const Product = ({
 }: ProductProps) => {
   const [userRegion, setUserRegion] = useState<string>("can't detect!!");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data: session } = useSession();
 
   useEffect(() => {
     // Function to get user's region using browser geolocation
@@ -82,6 +94,184 @@ const Product = ({
     getUserRegion();
   }, []);
 
+  const handlePayment = async () => {
+    try {
+      // Check if user is logged in
+      if (!session) {
+        console.log("❌ Payment attempt by unauthenticated user");
+        // Redirect to login or show login modal
+        toast.error("Please log in to continue with payment");
+        return;
+      }
+
+      console.log(`👤 User authenticated: ${session.user?.name || "Unknown"}`);
+      console.log(
+        `💰 Initiating payment for plan: ${title}, amount: ${discountedPrice}`
+      );
+
+      // Show loading toast
+      toast.loading("Initializing payment...");
+
+      // Create order on the server first
+      console.log("🔄 Creating order on server...");
+      const response = await fetch("/api/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: discountedPrice,
+          currency: "INR",
+          name: session.user?.name || "User",
+          email: session.user?.email || "",
+          contact: "0000000000", // Provide a default contact number
+          plan: title,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("❌ Order creation failed:", data.details);
+        toast.dismiss();
+        toast.error(data.error || "Failed to create order");
+        console.error("Order creation failed:", data.details);
+        return;
+      }
+
+      console.log(`✅ Order created successfully: ${data.order.id}`);
+
+      // Define payment options with the order ID from the server
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: "INR",
+        name: "DevExTech.pro",
+        description: `Paying for ${title}`,
+        image: "/favicon.png",
+        order_id: data.order.id,
+        prefill: {
+          name: session.user?.name || "User",
+          email: session.user?.email || "",
+          contact: "0000000000", // Provide a default contact number
+        },
+        notes: {
+          address: "Madhya Pradesh, India",
+          plan: title,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+        handler: async function (response: any) {
+          try {
+            console.log("💳 Payment completed in Razorpay, verifying...");
+            console.log(
+              `📦 Payment details: order_id=${response.razorpay_order_id}, payment_id=${response.razorpay_payment_id}`
+            );
+
+            // Show loading toast
+            toast.loading("Verifying payment...");
+
+            // Verify the payment
+            console.log("🔄 Sending verification request to server...");
+            const verifyResponse = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyResponse.ok) {
+              console.error(
+                "❌ Payment verification failed:",
+                verifyData.details
+              );
+              toast.dismiss();
+              toast.error(verifyData.error || "Payment verification failed");
+              console.error("Payment verification failed:", verifyData.details);
+              return;
+            }
+
+            // Payment verified successfully
+            console.log(
+              "✅ Payment verified successfully:",
+              verifyData.payment
+            );
+            toast.dismiss();
+            toast.success("Payment successful and verified!");
+            console.log("Payment verified:", verifyData.payment);
+
+            // Redirect to success page or update UI
+            // window.location.href = '/payment/success';
+          } catch (error: any) {
+            console.error("❌ Error during payment verification:", error);
+            toast.dismiss();
+            console.error("Payment verification failed:", error);
+            toast.error("Payment verification failed. Please contact support.");
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            console.log("❌ Payment modal dismissed by user");
+            toast.info("Payment cancelled");
+          },
+        },
+        config: {
+          display: {
+            blocks: {
+              banks: {
+                name: "Pay using Bank",
+                instruments: [
+                  {
+                    method: "card",
+                    flows: ["intent", "popup"],
+                    networks: ["visa", "mastercard", "rupay"],
+                    wallets: ["visa", "mastercard"],
+                    issuers: ["HDFC", "ICICI", "AXIS"],
+                  },
+                  {
+                    method: "upi",
+                    flows: ["intent", "collect"],
+                    networks: ["google_pay", "phonepe", "paytm"],
+                  },
+                  {
+                    method: "netbanking",
+                    flows: ["redirect"],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      };
+
+      // Dismiss loading toast
+      toast.dismiss();
+
+      // Initialize Razorpay
+      console.log("🔄 Initializing Razorpay checkout...");
+      const rzp = new window.Razorpay(options);
+
+      // Open Razorpay checkout
+      console.log("🔄 Opening Razorpay checkout...");
+      rzp.open();
+    } catch (error: any) {
+      console.error("❌ Error during payment process:", error);
+      toast.dismiss();
+      console.error("Payment initialization failed:", error);
+      toast.error(
+        error.message || "Payment initialization failed. Please try again."
+      );
+    }
+  };
+
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-lg border border-gray-300 dark:border-gray-700">
@@ -112,7 +302,7 @@ const Product = ({
           </div>
 
           <Button
-            onClick={onSubscribe}
+            onClick={handlePayment}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition-colors"
           >
             Get {title}

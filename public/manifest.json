@@ -1,0 +1,16 @@
+{
+  "name": "DevExTech.pro",
+  "short_name": "DevExTech",
+  "description": "Professional Development Solutions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3399cc",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
