@@ -5,4 +5,5 @@ export const ROUTES = {
   contact: "/contact",
   signIn: "/sign-in",
   signUp: "/sign-up",
+  SIGN_IN_WITH_OAUTH: "/auth/oauth",
 };
