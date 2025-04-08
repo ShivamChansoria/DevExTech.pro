@@ -111,11 +111,17 @@ export const authOptions: AuthOptions = {
       });
       if (session.user && token.sub) {
         // Get user data including contact
-        const { data: userData } = await api.users.getById(token.sub);
+        const { data: userData } = (await api.users.getById(
+          token.sub
+        )) as ActionResponse<IUserDoc>;
 
         // Add user data to session
         session.user.id = token.sub;
-        session.user.contact = userData?.contact || null;
+
+        // Safely access the contact property
+        if (userData && userData.contact) {
+          session.user.contact = userData.contact;
+        }
       }
       return session;
     },
@@ -217,4 +223,11 @@ export const authOptions: AuthOptions = {
   },
 };
 
-export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
+// Create the NextAuth instance
+const nextAuth = NextAuth(authOptions);
+
+// Export the auth functions
+export const { signIn, signOut, auth } = nextAuth;
+
+// Export the handlers for the route
+export const handlers = nextAuth;

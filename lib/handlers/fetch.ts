@@ -1,6 +1,9 @@
 import { RequestError } from "../http-errors";
 import logger from "../logger";
 import handleError from "./error";
+import { ActionResponse } from "../types/global";
+import { NextResponse } from "next/server";
+import { error } from "console";
 
 interface FetchOptions extends RequestInit {
   timeout?: number;
@@ -69,6 +72,11 @@ export async function fetchHandler<T>(
       logger.error(`Error fetching ${url}: ${error.message}`);
     }
 
-    return handleError(error) as ActionResponse<T>;
+    // Return a simple error response
+    return {
+      success: false,
+      error: error.message,
+      data: undefined,
+    } as ActionResponse<T>;
   }
 }

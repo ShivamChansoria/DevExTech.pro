@@ -5,13 +5,14 @@ import connectToDB from "@/lib/mongoose";
 import mongoose from "mongoose";
 
 export async function POST(req: NextRequest) {
-  // Start a MongoDB session
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
+  let session;
   try {
-    // Connect to the database
+    // Connect to the database first
     await connectToDB();
+
+    // Start a MongoDB session after connection is established
+    session = await mongoose.startSession();
+    session.startTransaction();
 
     // Parse the request body
     const body = await req.json();
@@ -19,8 +20,10 @@ export async function POST(req: NextRequest) {
 
     // Validate required fields
     if (!amount || !currency || !name || !plan || !contact) {
-      await session.abortTransaction();
-      session.endSession();
+      if (session) {
+        await session.abortTransaction();
+        session.endSession();
+      }
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -31,8 +34,10 @@ export async function POST(req: NextRequest) {
     const amountInPaise = Math.round(parseFloat(amount) * 100);
 
     if (isNaN(amountInPaise) || amountInPaise <= 0) {
-      await session.abortTransaction();
-      session.endSession();
+      if (session) {
+        await session.abortTransaction();
+        session.endSession();
+      }
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
@@ -51,7 +56,7 @@ export async function POST(req: NextRequest) {
         plan,
         customer_name: name,
         customer_email: email || "",
-        customer_contact: contact || "0000000000", // Provide a default value if contact is missing
+        customer_contact: contact || "0000000000",
       },
     });
 
@@ -64,7 +69,7 @@ export async function POST(req: NextRequest) {
           amount: parseFloat(amount),
           name,
           email: email || "",
-          contact: contact || "0000000000", // Provide a default value if contact is missing
+          contact: contact || "0000000000",
           plan,
         },
       ],
@@ -82,8 +87,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     // Abort the transaction on error
-    await session.abortTransaction();
-    session.endSession();
+    if (session) {
+      await session.abortTransaction();
+      session.endSession();
+    }
 
     console.error("Error creating order:", error);
 

@@ -29,7 +29,7 @@ const Contact = () => {
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
+      contact: "",
       message: "",
     },
   });
@@ -103,7 +103,7 @@ const Contact = () => {
                     />
                     <FormField
                       control={form.control}
-                      name="phone"
+                      name="contact"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>PHONE NUMBER</FormLabel>

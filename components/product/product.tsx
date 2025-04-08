@@ -209,8 +209,8 @@ const Product = ({
             toast.success("Payment successful and verified!");
             console.log("Payment verified:", verifyData.payment);
 
-            // Redirect to success page or update UI
-            // window.location.href = '/payment/success';
+            // Redirect to my-purchase page
+            window.location.href = "/my-purchase";
           } catch (error: any) {
             console.error("❌ Error during payment verification:", error);
             toast.dismiss();
