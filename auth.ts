@@ -44,6 +44,7 @@ export const authOptions: AuthOptions = {
           response_type: "code",
         },
       },
+      callbackUrl: "https://devextech.pro/api/auth/callback/google",
     }),
     Credentials({
       credentials: {
