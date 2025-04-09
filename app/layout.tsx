@@ -71,7 +71,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_API_BASE_URL || "https://devextech.pro"
   ),
-  title: "DevexTech.pro - Professional Technology & Business Solutions",
+  title: {
+    default: "DevexTech.pro - Professional Technology & Business Solutions",
+    template: "%s | DevexTech.pro",
+  },
   description:
     "DevexTech.pro offers cutting-edge technology solutions and business services. We specialize in website development, digital transformation, and online business solutions for startups and enterprises.",
   keywords: [
@@ -141,6 +144,9 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+  alternates: {
+    canonical: "https://devextech.pro",
   },
   verification: {
     google: "your-google-site-verification",
