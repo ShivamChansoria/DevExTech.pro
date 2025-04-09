@@ -14,6 +14,7 @@ import NextAuth, {
   Account,
   Profile,
   User,
+  NextAuthOptions,
 } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GitHub from "next-auth/providers/github";
@@ -26,83 +27,17 @@ import Credentials from "next-auth/providers/credentials";
 import { IAccount, IAccountDoc } from "./database/account.model";
 import { ActionResponse } from "./lib/types/global";
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
   pages: {
     signIn: "/sign-in",
     error: "/auth/error",
   },
   secret: process.env.AUTH_SECRET,
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_ID || "",
-      clientSecret: process.env.GOOGLE_SECRET || "",
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-        },
-      },
-      callbackUrl: "https://devextech.pro/api/auth/callback/google",
-    }),
-    Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        const validatedFields = SignInSchema.safeParse(credentials);
-
-        if (!validatedFields.success) {
-          return null;
-        }
-
-        // Step 2: Extract validated email and password
-        const { email, password } = validatedFields.data;
-
-        // Step 3: Check if account exists with the email
-        const { success, data: existingAccount } =
-          (await api.accounts.getByProvider(
-            email
-          )) as ActionResponse<IAccountDoc>;
-
-        if (!success || !existingAccount) {
-          return null;
-        }
-
-        // Step 4: Get associated user data
-        const { data: existingUser } = (await api.users.getById(
-          existingAccount.userId.toString()
-        )) as ActionResponse<IUserDoc>;
-        if (!success || !existingUser) {
-          return null;
-        }
-
-        // Step 5: Verify password using the account's password
-        const isValidPassword = await bcrypt.compare(
-          password,
-          existingAccount.password || ""
-        );
-
-        // Step 6: Return user data if password is valid
-        if (isValidPassword) {
-          return {
-            id: existingUser._id?.toString() || existingUser.email,
-            firstname: existingUser.firstname,
-            lastname: existingUser.lastname,
-            email: existingUser.email,
-            contact: existingUser.contact || null,
-          };
-        }
-
-        return null;
-      },
-    }),
-  ],
-
-  // Callbacks for handling authentication events
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
     // Callback 1: JWT Token Management
     // Adds user ID to the JWT token for OAuth providers
     async jwt({ token, account }: { token: JWT; account: Account | null }) {
@@ -198,6 +133,72 @@ export const authOptions: AuthOptions = {
       }
     },
   },
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
+    Credentials({
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const validatedFields = SignInSchema.safeParse(credentials);
+
+        if (!validatedFields.success) {
+          return null;
+        }
+
+        // Step 2: Extract validated email and password
+        const { email, password } = validatedFields.data;
+
+        // Step 3: Check if account exists with the email
+        const { success, data: existingAccount } =
+          (await api.accounts.getByProvider(
+            email
+          )) as ActionResponse<IAccountDoc>;
+
+        if (!success || !existingAccount) {
+          return null;
+        }
+
+        // Step 4: Get associated user data
+        const { data: existingUser } = (await api.users.getById(
+          existingAccount.userId.toString()
+        )) as ActionResponse<IUserDoc>;
+        if (!success || !existingUser) {
+          return null;
+        }
+
+        // Step 5: Verify password using the account's password
+        const isValidPassword = await bcrypt.compare(
+          password,
+          existingAccount.password || ""
+        );
+
+        // Step 6: Return user data if password is valid
+        if (isValidPassword) {
+          return {
+            id: existingUser._id?.toString() || existingUser.email,
+            firstname: existingUser.firstname,
+            lastname: existingUser.lastname,
+            email: existingUser.email,
+            contact: existingUser.contact || null,
+          };
+        }
+
+        return null;
+      },
+    }),
+  ],
 };
 
 // Create the NextAuth instance
