@@ -11,8 +11,6 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  // Remove swcMinify as it's causing warnings
-  swcMinify: undefined,
   // Add security headers
   async headers() {
     return [
