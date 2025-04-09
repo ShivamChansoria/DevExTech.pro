@@ -68,6 +68,9 @@ const notoSansExtraBoldItalic = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_API_BASE_URL || "https://devextech.pro"
+  ),
   title: "DevexTech.pro - Professional Technology & Business Solutions",
   description:
     "DevexTech.pro offers cutting-edge technology solutions and business services. We specialize in website development, digital transformation, and online business solutions for startups and enterprises.",
