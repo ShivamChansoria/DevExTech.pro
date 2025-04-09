@@ -27,7 +27,7 @@ import { IAccount, IAccountDoc } from "./database/account.model";
 import { ActionResponse } from "./lib/types/global";
 
 export const authOptions: AuthOptions = {
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   pages: {
     signIn: "/sign-in",
     error: "/auth/error",
