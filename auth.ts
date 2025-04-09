@@ -102,31 +102,7 @@ export const authOptions: AuthOptions = {
 
   // Callbacks for handling authentication events
   callbacks: {
-    // Callback 1: Session Management
-    // Adds user ID to the session object
-    async session({ session, token }: { session: Session; token: JWT }) {
-      console.log("[SERVER] Session callback triggered", {
-        sessionUser: session?.user?.email,
-        tokenSub: token?.sub,
-      });
-      if (session.user && token.sub) {
-        // Get user data including contact
-        const { data: userData } = (await api.users.getById(
-          token.sub
-        )) as ActionResponse<IUserDoc>;
-
-        // Add user data to session
-        session.user.id = token.sub;
-
-        // Safely access the contact property
-        if (userData && userData.contact) {
-          session.user.contact = userData.contact;
-        }
-      }
-      return session;
-    },
-
-    // Callback 2: JWT Token Management
+    // Callback 1: JWT Token Management
     // Adds user ID to the JWT token for OAuth providers
     async jwt({ token, account }: { token: JWT; account: Account | null }) {
       console.log("[SERVER] JWT callback triggered", {
@@ -147,7 +123,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
 
-    // Callback 3: Sign In Process
+    // Callback 2: Sign In Process
     // Handles both credential and OAuth sign-in
     async signIn({
       user,

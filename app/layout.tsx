@@ -68,14 +68,80 @@ const notoSansExtraBoldItalic = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "DevexTech.pro",
-  description: "DevexTech.pro - Professional Development Solutions",
+  title: "DevexTech.pro - Professional Technology & Business Solutions",
+  description:
+    "DevexTech.pro offers cutting-edge technology solutions and business services. We specialize in website development, digital transformation, and online business solutions for startups and enterprises.",
+  keywords: [
+    "technology",
+    "business solution",
+    "online business",
+    "online business solutions",
+    "devextech",
+    "devextech.pro",
+    "tech startup",
+    "website builder",
+    "digital transformation",
+    "website design tools",
+    "best website builder for startups",
+    "affordable website design",
+    "AI-powered website builder",
+    "custom website solutions",
+    "cloud-based website design",
+    "responsive website templates",
+    "startup website hosting",
+  ].join(", "),
+  authors: [{ name: "DevexTech.pro" }],
+  creator: "DevexTech.pro",
+  publisher: "DevexTech.pro",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: { url: "/favicon.png", type: "image/png" },
     shortcut: { url: "/favicon.png", type: "image/png" },
     apple: { url: "/favicon.png", type: "image/png" },
   },
   manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://devextech.pro",
+    title: "DevexTech.pro - Professional Technology & Business Solutions",
+    description:
+      "Transform your business with our cutting-edge technology solutions and professional services.",
+    siteName: "DevexTech.pro",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "DevexTech.pro - Technology & Business Solutions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DevexTech.pro - Professional Technology & Business Solutions",
+    description:
+      "Transform your business with our cutting-edge technology solutions and professional services.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-site-verification",
+  },
 };
 
 export default function RootLayout({
