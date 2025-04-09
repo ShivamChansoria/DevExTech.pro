@@ -144,6 +144,15 @@ export const authOptions: NextAuthOptions = {
           response_type: "code",
         },
       },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          firstname: profile.given_name,
+          lastname: profile.family_name,
+          email: profile.email,
+          contact: null,
+        };
+      },
     }),
     Credentials({
       credentials: {

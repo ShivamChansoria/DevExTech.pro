@@ -113,14 +113,14 @@ export const metadata: Metadata = {
     url: "https://devextech.pro",
     title: "DevexTech.pro - Professional Technology & Business Solutions",
     description:
-      "Transform your business with our cutting-edge technology solutions and professional services.",
+      "Cutting-edge technology solutions and business services for startups and enterprises.",
     siteName: "DevexTech.pro",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://devextech.pro/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "DevexTech.pro - Technology & Business Solutions",
+        alt: "DevexTech.pro",
       },
     ],
   },
@@ -128,8 +128,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "DevexTech.pro - Professional Technology & Business Solutions",
     description:
-      "Transform your business with our cutting-edge technology solutions and professional services.",
-    images: ["/og-image.png"],
+      "Cutting-edge technology solutions and business services for startups and enterprises.",
+    images: ["https://devextech.pro/images/twitter-image.jpg"],
   },
   robots: {
     index: true,
