@@ -65,29 +65,38 @@ export async function POST(request: NextRequest) {
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
     }
 
-    const { name, username, email, image } = user;
-    const slugifiedUsername = slugify(username, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
+    const { name = "", email, image = "" } = validatedData.data.user;
 
-    // Split name into firstname and lastname
-    const nameParts = name.split(" ");
+    // Split name into firstname and lastname with proper null checks
+    const nameParts = (name || "").split(" ");
     const firstname = nameParts[0] || "";
     const lastname = nameParts.slice(1).join(" ") || "";
+
+    console.log("[DEBUG] Processed user data:", {
+      name,
+      firstname,
+      lastname,
+      email,
+      image,
+    });
 
     // Check if user exists
     let existingUser = await User.findOne({ email }).session(session);
 
     if (!existingUser) {
       // Create new user if doesn't exist
-      existingUser = await User.create({
-        firstname,
-        lastname,
-        email,
-        image,
-      });
+      const newUsers = await User.create(
+        [
+          {
+            firstname,
+            lastname,
+            email,
+            image: image || undefined,
+          },
+        ],
+        { session }
+      );
+      existingUser = newUsers[0];
     } else {
       const updatedData: {
         firstname?: string;
@@ -97,11 +106,12 @@ export async function POST(request: NextRequest) {
       if (existingUser.firstname !== firstname)
         updatedData.firstname = firstname;
       if (existingUser.lastname !== lastname) updatedData.lastname = lastname;
-      if (existingUser.image !== image) updatedData.image = image;
+      if (existingUser.image !== image) updatedData.image = image || undefined;
       if (Object.keys(updatedData).length > 0) {
-        await existingUser
-          .updateOne({ _id: existingUser._id }, { $set: updatedData })
-          .session(session);
+        await User.updateOne(
+          { _id: existingUser._id },
+          { $set: updatedData }
+        ).session(session);
       }
     }
 
