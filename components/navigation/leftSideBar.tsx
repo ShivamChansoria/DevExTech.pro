@@ -150,7 +150,7 @@ const LeftSideBar = () => {
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center justify-between">
                   <Link
-                    href={ROUTES.profile(session.user?.email || "")}
+                    href={ROUTES.myPurchase}
                     className="flex items-center space-x-2 py-2 hover:text-primary transition-colors"
                   >
                     <RiUserLine className="h-5 w-5" />

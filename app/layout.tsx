@@ -68,16 +68,41 @@ const notoSansExtraBoldItalic = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_API_BASE_URL || "https://devextech.pro"
-  ),
   title: {
     default: "DevexTech.pro - Professional Technology & Business Solutions",
     template: "%s | DevexTech.pro",
   },
   description:
     "DevexTech.pro offers cutting-edge technology solutions and business services. We specialize in website development, digital transformation, and online business solutions for startups and enterprises.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/favicon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.png",
+  },
+  themeColor: "#3399cc",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_API_BASE_URL || "https://devextech.pro"
+  ),
   keywords: [
+    "website builder",
+    "website building",
+    "website design",
+    "website development",
+    "website hosting",
+    "website maintenance",
+    "website design tools",
+    "website design services",
+    "website design company",
+    "website design agency",
+    "website design portfolio",
+    "website design blog",
+    "website design news",
+    "website design trends",
     "technology",
     "business solution",
     "online business",
@@ -104,12 +129,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  icons: {
-    icon: { url: "/favicon.png", type: "image/png" },
-    shortcut: { url: "/favicon.png", type: "image/png" },
-    apple: { url: "/favicon.png", type: "image/png" },
-  },
-  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -120,10 +139,10 @@ export const metadata: Metadata = {
     siteName: "DevexTech.pro",
     images: [
       {
-        url: "https://devextech.pro/images/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "DevexTech.pro",
+        url: "/favicon.png",
+        width: 512,
+        height: 512,
+        alt: "DevexTech.pro Logo",
       },
     ],
   },
@@ -132,7 +151,8 @@ export const metadata: Metadata = {
     title: "DevexTech.pro - Professional Technology & Business Solutions",
     description:
       "Cutting-edge technology solutions and business services for startups and enterprises.",
-    images: ["https://devextech.pro/images/twitter-image.jpg"],
+    images: ["/favicon.png"],
+    creator: "@devextech",
   },
   robots: {
     index: true,
