@@ -132,8 +132,11 @@ const Product = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: discountedPrice,
-          currency: "INR",
+          amount:
+            userRegion === "India"
+              ? discountedPrice
+              : internationalDiscountedPrice,
+          currency: userRegion === "India" ? "INR" : "USD",
           name: session.user?.name || "User",
           email: session.user?.email || "",
           contact: session.user?.contact || "0000000000", // Use phone number from session
@@ -156,7 +159,10 @@ const Product = ({
       // Define payment options with the order ID from the server
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: data.order.amount,
+        amount:
+          userRegion === "India"
+            ? discountedPrice
+            : internationalDiscountedPrice,
         currency: userRegion === "India" ? "INR" : "USD",
         name: "DevExTech.pro",
         description: `Paying for ${title}`,
