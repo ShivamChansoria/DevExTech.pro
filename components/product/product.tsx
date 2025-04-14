@@ -17,8 +17,17 @@ import { api } from "@/lib/api";
 import { headers } from "next/headers";
 import Contact from "../contact/contact";
 
-interface ProductProps extends ProductSchemaParams {
-  onSubscribe?: () => void;
+export interface ProductProps {
+  title: string;
+  description: string;
+  price: number;
+  discountedPrice: number;
+  productDescription: string;
+  inclusions: string[];
+  access: string[];
+  onSubscribe: () => void;
+  internationalPrice: number;
+  internationalDiscountedPrice: number;
 }
 
 // Add Razorpay type declaration
@@ -37,6 +46,8 @@ const Product = ({
   inclusions,
   access,
   onSubscribe,
+  internationalPrice,
+  internationalDiscountedPrice,
 }: ProductProps) => {
   const [userRegion, setUserRegion] = useState<string>("can't detect!!");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -146,7 +157,7 @@ const Product = ({
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.order.amount,
-        currency: "INR",
+        currency: userRegion === "India" ? "INR" : "USD",
         name: "DevExTech.pro",
         description: `Paying for ${title}`,
         image: "/favicon.png",
@@ -291,14 +302,18 @@ const Product = ({
           <div className="text-center mb-4">
             <div className="flex items-center justify-center gap-2">
               <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                ₹{discountedPrice}
+                {userRegion === "India" ? "₹" : "$"}
+                {userRegion === "India"
+                  ? discountedPrice
+                  : internationalDiscountedPrice}
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 one time payment
               </span>
             </div>
             <div className="text-gray-500 dark:text-gray-400 line-through text-sm mt-1">
-              ₹{price}
+              {userRegion === "India" ? "₹" : "$"}
+              {userRegion === "India" ? price : internationalPrice}
             </div>
           </div>
 

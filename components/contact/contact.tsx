@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FaGoogle, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { formSchema } from "@/lib/validation";
+import emailjs from "@emailjs/browser";
+import { toast } from "sonner";
 
 type FormData = z.infer<typeof formSchema>;
 
@@ -34,12 +36,44 @@ const Contact = () => {
     },
   });
 
+  useEffect(() => {
+    emailjs.init("hLSs87ymUM38S-5Jj");
+  }, []);
+
   // Form submission handler
-  async function onSubmit(values: FormData) {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(values);
-    form.reset();
+  async function submitHandler(values: FormData) {
+    // Prevent default form submission behavior
+    const preventDefaultHandler = (e: React.FormEvent) => {
+      e.preventDefault();
+    };
+    try {
+      const templateParams = {
+        to_email: "hello@devextech.pro",
+        from_name: `${values.firstName} ${values.lastName}`,
+        reply_to: values.email,
+        from_email: values.email,
+        phone: values.contact,
+        message: values.message,
+      };
+
+      const result = await emailjs.send(
+        "service_r5li6oo",
+        "template_rw1ar6o",
+        templateParams
+      );
+
+      console.log("EmailJS Result:", result);
+
+      if (result.text === "OK") {
+        form.reset();
+        toast.success("Message sent successfully!");
+      } else {
+        throw new Error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Email error:", error);
+      toast.error("Failed to send message. Please try again.");
+    }
   }
 
   return (
@@ -51,7 +85,8 @@ const Contact = () => {
             <div className="bg-gray-50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800">
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  id="contact-form"
+                  onSubmit={form.handleSubmit(submitHandler)}
                   className="space-y-6"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -165,7 +200,7 @@ const Contact = () => {
                 <div className="flex items-center space-x-4">
                   <Phone className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                   <span className="text-gray-600 dark:text-gray-300">
-                    +1258 3258 5679
+                    +91 8817516289
                   </span>
                 </div>
 

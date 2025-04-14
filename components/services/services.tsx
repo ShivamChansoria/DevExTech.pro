@@ -9,7 +9,9 @@ const Services = () => {
       title: "Starter",
       description: "Perfect for beginners starting their business journey",
       price: 8000.0,
+      internationalPrice: 1000,
       discountedPrice: 4000,
+      internationalDiscountedPrice: 200,
       productDescription:
         "Make your presence online with a basic business website",
       inclusions: [
@@ -26,8 +28,10 @@ const Services = () => {
       title: "Professional",
       description:
         "Ideal for business owners looking to advance their bussiness with online e-commerce",
+      internationalPrice: 4000,
       price: 400000,
       discountedPrice: 14999,
+      internationalDiscountedPrice: 1000,
       productDescription:
         "Create a full fledged e-commerce website with all the features using latest technologies",
       inclusions: [
@@ -45,8 +49,10 @@ const Services = () => {
     {
       title: "Enterprise",
       description: "For businesses who have their legacy. ",
+      internationalPrice: 6000,
       price: 60000,
       discountedPrice: 24999,
+      internationalDiscountedPrice: 1499,
       productDescription: "Comprehensive solution for teams and organizations",
       inclusions: [
         "Everything in Professional",
@@ -66,8 +72,10 @@ const Services = () => {
     {
       title: "Enterprise Pro",
       description: "Tailored solutions for whom business is their life",
+      internationalPrice: 8000,
       price: 80000,
       discountedPrice: 34999,
+      internationalDiscountedPrice: 2000,
       productDescription:
         "Customized solutions for your large scale business requirements",
       inclusions: [
@@ -126,6 +134,10 @@ const Services = () => {
                   productDescription={plan.productDescription}
                   inclusions={plan.inclusions}
                   access={plan.access}
+                  internationalPrice={plan.internationalPrice}
+                  internationalDiscountedPrice={
+                    plan.internationalDiscountedPrice
+                  }
                   onSubscribe={() =>
                     console.log(`Subscribed to plan ${index + 1}`)
                   }
@@ -145,6 +157,10 @@ const Services = () => {
                 productDescription={plans[3].productDescription}
                 inclusions={plans[3].inclusions}
                 access={plans[3].access}
+                internationalPrice={plans[3].internationalPrice}
+                internationalDiscountedPrice={
+                  plans[3].internationalDiscountedPrice
+                }
                 onSubscribe={() => console.log("Subscribed to plan 4")}
               />
             </div>
