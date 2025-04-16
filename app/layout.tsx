@@ -5,6 +5,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navigation/navbar";
 import { LeftSideBar } from "@/components/navigation";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -191,6 +192,7 @@ export default function RootLayout({
           font-noto-sans antialiased`}
         suppressHydrationWarning
       >
+        <GoogleAnalytics />
         <Providers>
           <div className="min-h-screen bg-background">
             <Navbar />
