@@ -3,6 +3,7 @@
 import React from "react";
 import { Bell, ArrowDownCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   const scrollToServices = (e: React.MouseEvent) => {
@@ -48,6 +49,17 @@ const Hero = () => {
           <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400 transition-all duration-300 hover:text-gray-200">
             Choose the plan that best fits your growth journey and business
             goals.
+          </p>
+
+          {/* Contact Us Text */}
+          <p className="mt-12 text-xl font-bold text-white transition-all duration-300 hover:text-blue-400">
+            <Link href="/contact">
+              Contact Us Today to Get Started
+              <br />
+              Today At: +91 8817516289 /
+              <br />
+              hello@devextech.pro
+            </Link>
           </p>
 
           {/* Animated Arrow */}

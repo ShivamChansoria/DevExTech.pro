@@ -34,6 +34,7 @@ const Services = () => {
       internationalDiscountedPrice: 1000,
       productDescription:
         "Create a full fledged e-commerce website with all the features using latest technologies",
+      exclusive: "100% Money back Guarantee*",
       inclusions: [
         "Everything in Starter",
         "Advanced product listing with Cart",
@@ -54,6 +55,7 @@ const Services = () => {
       discountedPrice: 24999,
       internationalDiscountedPrice: 1499,
       productDescription: "Comprehensive solution for teams and organizations",
+      exclusive: "100% Money back Guarantee*",
       inclusions: [
         "Everything in Professional",
         "Admin panel for managing the website",
@@ -78,6 +80,7 @@ const Services = () => {
       internationalDiscountedPrice: 2000,
       productDescription:
         "Customized solutions for your large scale business requirements",
+      exclusive: "100% Money back Guarantee*",
       inclusions: [
         "Everything in Enterprise",
         "Fignma Design",
@@ -138,6 +141,7 @@ const Services = () => {
                   internationalDiscountedPrice={
                     plan.internationalDiscountedPrice
                   }
+                  exclusive={plan.exclusive}
                   onSubscribe={() =>
                     console.log(`Subscribed to plan ${index + 1}`)
                   }
@@ -161,6 +165,7 @@ const Services = () => {
                 internationalDiscountedPrice={
                   plans[3].internationalDiscountedPrice
                 }
+                exclusive={plans[3].exclusive}
                 onSubscribe={() => console.log("Subscribed to plan 4")}
               />
             </div>

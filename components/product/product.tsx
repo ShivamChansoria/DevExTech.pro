@@ -9,6 +9,7 @@ import {
   FileCode2,
   MessageSquare,
   MonitorPlay,
+  Star,
 } from "lucide-react";
 import ProductSchemaParams from "@/lib/types/global";
 import { toast } from "sonner";
@@ -28,6 +29,7 @@ export interface ProductProps {
   onSubscribe: () => void;
   internationalPrice: number;
   internationalDiscountedPrice: number;
+  exclusive: string;
 }
 
 // Add Razorpay type declaration
@@ -48,6 +50,7 @@ const Product = ({
   onSubscribe,
   internationalPrice,
   internationalDiscountedPrice,
+  exclusive,
 }: ProductProps) => {
   const [userRegion, setUserRegion] = useState<string>("can't detect!!");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -343,6 +346,24 @@ const Product = ({
             </p>
           </div>
         </div>
+
+        {/* Exclusions Section */}
+        {exclusive && (
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">
+              EXCLUSIVE
+            </h3>
+            <div className="flex items-center gap-3">
+              <Star className="w-5 h-5 text-red-500" aria-hidden="true" />
+              <span className="text-gray-700 dark:text-gray-300">
+                {exclusive}
+              </span>
+            </div>
+            <p className="mt-2 text-sm text-red-500 font-medium ">
+              Valid for limited time only.
+            </p>
+          </div>
+        )}
 
         {/* Features */}
         <div className="p-6 bg-gray-100 dark:bg-gray-800">
