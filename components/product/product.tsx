@@ -314,10 +314,11 @@ const Product = ({
                 {userRegion === "India" ? "₹" : "$"}
                 {userRegion === "India"
                   ? discountedPrice
-                  : internationalDiscountedPrice}
+                  : internationalDiscountedPrice}{" "}
+                x 4
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                one time payment
+                in simple four Installments
               </span>
             </div>
             <div className="text-gray-500 dark:text-gray-400 line-through text-sm mt-1">

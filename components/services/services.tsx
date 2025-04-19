@@ -10,8 +10,8 @@ const Services = () => {
       description: "Perfect for beginners starting their business journey",
       price: 8000.0,
       internationalPrice: 1000,
-      discountedPrice: 4000,
-      internationalDiscountedPrice: 200,
+      discountedPrice: 999,
+      internationalDiscountedPrice: 50,
       productDescription:
         "Make your presence online with a basic business website",
       inclusions: [
@@ -30,8 +30,8 @@ const Services = () => {
         "Ideal for business owners looking to advance their bussiness with online e-commerce",
       internationalPrice: 4000,
       price: 400000,
-      discountedPrice: 14999,
-      internationalDiscountedPrice: 1000,
+      discountedPrice: 3999,
+      internationalDiscountedPrice: 249,
       productDescription:
         "Create a full fledged e-commerce website with all the features using latest technologies",
       exclusive: "100% Money back Guarantee*",
@@ -52,8 +52,8 @@ const Services = () => {
       description: "For businesses who have their legacy. ",
       internationalPrice: 6000,
       price: 60000,
-      discountedPrice: 24999,
-      internationalDiscountedPrice: 1499,
+      discountedPrice: 5999,
+      internationalDiscountedPrice: 349,
       productDescription: "Comprehensive solution for teams and organizations",
       exclusive: "100% Money back Guarantee*",
       inclusions: [
@@ -76,8 +76,8 @@ const Services = () => {
       description: "Tailored solutions for whom business is their life",
       internationalPrice: 8000,
       price: 80000,
-      discountedPrice: 34999,
-      internationalDiscountedPrice: 2000,
+      discountedPrice: 7999,
+      internationalDiscountedPrice: 499,
       productDescription:
         "Customized solutions for your large scale business requirements",
       exclusive: "100% Money back Guarantee*",
